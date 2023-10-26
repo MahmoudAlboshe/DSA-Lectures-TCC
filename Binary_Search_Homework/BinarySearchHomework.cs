@@ -51,30 +51,36 @@ namespace Binary_Search_Homework // don't edit this line!!!
         }
 
         public static int BinarySearchForCalculatingRepeated(int[] arr, int key, bool is_first, int start, int end) // don't edit this line!!!
-                                                                    // يمكنك تجاهل برمترات البداية والنهاية إذا لا تريد استخدام الطريقة العودية 
-                                                                    // لكن لاتقوم بحذفهم أو التعديل عليهم هنا تحت اي ظرف!!!
-                                                                    // من الممكن تمرير قيمة 0 لتجاهلهم
+                                                                                                                    // يمكنك تجاهل برمترات البداية والنهاية إذا لا تريد استخدام الطريقة العودية 
+                                                                                                                    // لكن لاتقوم بحذفهم أو التعديل عليهم هنا تحت اي ظرف!!!
+                                                                                                                    // من الممكن تمرير قيمة 0 لتجاهلهم
         {
-            int left = 0;
-            int right = arr.Length - 1;
             int result = -1;
 
-            while (left <= right)
+            while (start <= end)
             {
-                int mid = left + (right - left) / 2;
+                int mid = start + (end - start) / 2;
 
                 if (arr[mid] == key)
                 {
                     result = mid;
-                    right = mid - 1;
+
+                    if (is_first)
+                    {
+                        end = mid - 1;
+                    }
+                    else
+                    {
+                        start = mid + 1;
+                    }
                 }
                 else if (arr[mid] < key)
                 {
-                    left = mid + 1;
+                    start = mid + 1;
                 }
                 else
                 {
-                    right = mid - 1;
+                    end = mid - 1;
                 }
             }
 
@@ -84,24 +90,21 @@ namespace Binary_Search_Homework // don't edit this line!!!
 
         public static int GetRepeatCount(int[] arr, int key) // don't edit this line!!!
         {
-            int start = BinarySearchForCalculatingRepeated(arr, key,true,0,0);
+            int firstOccurrenceIndex = BinarySearchForCalculatingRepeated(arr, key, true, 0, arr.Length - 1);
+            int lastOccurrenceIndex = BinarySearchForCalculatingRepeated(arr, key, false, 0, arr.Length - 1);
 
-            if (start == -1)
+            if (firstOccurrenceIndex == -1)
             {
-                return -1; 
+                return 0;
             }
-
-            int end = start;
-
-            
-            while (end + 1 < arr.Length && arr[end + 1] == key)
+            else
             {
-                end++;
+                return lastOccurrenceIndex - firstOccurrenceIndex + 1;
             }
 
             //TODO: write code to calculate the repeat count of a spacific element
             // make sure to use the previous method in this method
-            return end - start + 1;
+            
         }
     }
 }
